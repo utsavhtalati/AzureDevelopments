@@ -1,45 +1,19 @@
-
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
+# ADO Pipeline YAML for ARM Template Deployment
 trigger:
-- master
+- main  # Set the branch that triggers the pipeline
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-latest'  # Use an appropriate build agent image
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
-steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '6.x'  
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-
-- script: |
-    dotnet --version
-  displayName: 'Check .NET Core SDK Version'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*[Tt]ests/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+jobs:
+- job: DeployARMTemplates
+  displayName: 'Deploy ARM Templates'
+  steps:
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
+      subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
+      resourceGroupName: 'ARM_Template_Test'
+      location: 'US-east'  # Replace with your target Azure region <east> 
+      csmFile: 'azuredeploy.json'  # Replace with the path to your ARM template JSON file
+      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
