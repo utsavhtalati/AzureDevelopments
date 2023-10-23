@@ -6,7 +6,7 @@
         "type": "string",
         "minLength": 2, 
         "maxLength": 24,
-        "defaultValue": "utsav123" //error thrown here.
+        "defaultValue": "utsav321" 
        
     }
     },
@@ -14,7 +14,7 @@
     "variables": {},
     "resources": [
         {
-            "name": "utsav123", //name of file. 
+            "name": "utsav321", 
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2023-01-01",
             "location": "[resourceGroup().location]",
