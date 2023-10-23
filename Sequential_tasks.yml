@@ -7,7 +7,7 @@ pool:
 
 jobs:
 - job: DeployARMTemplates
-  displayName: 'Deploy ARM Templates'
+  displayName: 'Deploy ARM Templates' # custom name for the task
   steps:
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -17,6 +17,7 @@ jobs:
       location: 'US-east'  # Replace with your target Azure region
       csmFile: 'AppService.json'  # Replace with the path to your ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+    displayName: 'AppService'
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
@@ -25,6 +26,7 @@ jobs:
       location: 'US-east'  # Replace with your target Azure region
       csmFile: 'KeyVault.json'  # Replace with the path to your Key Vault ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+    displayName: 'KeyVault'
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
@@ -33,5 +35,6 @@ jobs:
       location: 'US-east'  # Replace with your target Azure region
       csmFile: 'azuredeploy.json'  # Replace with the path to your Storage Account ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+    displayName: 'AzureDeploy'
 
    
