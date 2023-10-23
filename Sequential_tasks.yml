@@ -33,11 +33,5 @@ jobs:
       location: 'US-east'  # Replace with your target Azure region
       csmFile: 'StorageAccount.json'  # Replace with the path to your Storage Account ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-  - task: AzureResourceManagerTemplateDeployment@3
-    inputs:
-      azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
-      subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
-      resourceGroupName: 'ARM_Template_Test'
-      location: 'US-east'  # Replace with your target Azure region
-      csmFile: 'WebApp.json'  # Replace with the path to your Web App ARM template JSON file
-      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+
+   
