@@ -17,7 +17,7 @@ jobs:
       location: 'US-east'  # Replace with your target Azure region
       csmFile: 'AppService.json'  # Replace with the path to your ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-    displayName: 'AppService'
+    displayName: 'AppService + AppServicePlan'
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
@@ -46,4 +46,3 @@ jobs:
       csmFile: 'Storage.json'  # Replace with the path to your Storage Account ARM template JSON file
       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
     displayName: 'Storage'
-   
