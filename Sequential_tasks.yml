@@ -1,75 +1,26 @@
-# # ADO Pipeline YAML for ARM Template Deployment
-# trigger:
-# - main  # Set the branch that triggers the pipeline
-
-# pool:
-#   vmImage: 'windows-latest'  # Use an appropriate build agent image
-
-# jobs:
-# - job: DeployARMTemplates
-#   displayName: 'Deploy ARM Templates' # custom name for the task
-#   steps:
-#   - task: AzureResourceManagerTemplateDeployment@3
-#     inputs:
-#       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
-#       subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
-#       resourceGroupName: 'ARM_Template_Test'
-#       location: 'US-east'  # Replace with your target Azure region
-#       csmFile: 'AppService.json'  # Replace with the path to your ARM template JSON file
-#       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-#     displayName: 'AppService + AppServicePlan'
-#   - task: AzureResourceManagerTemplateDeployment@3
-#     inputs:
-#       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
-#       subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
-#       resourceGroupName: 'ARM_Template_Test'
-#       location: 'US-east'  # Replace with your target Azure region
-#       csmFile: 'KeyVault.json'  # Replace with the path to your Key Vault ARM template JSON file
-#       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-#     displayName: 'KeyVault'
-#   - task: AzureResourceManagerTemplateDeployment@3
-#     inputs:
-#       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
-#       subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
-#       resourceGroupName: 'ARM_Template_Test'
-#       location: 'US-east'  # Replace with your target Azure region
-#       csmFile: 'azuredeploy.json'  # Replace with the path to your Storage Account ARM template JSON file
-#       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-#     displayName: 'AzureDeploy'
-
-#   - task: AzureResourceManagerTemplateDeployment@3
-#     inputs:
-#       azureResourceManagerConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name 
-#       subscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
-#       resourceGroupName: 'ARM_Template_Test'
-#       location: 'US-east'  # Replace with your target Azure region
-#       csmFile: 'Storage.json'  # Replace with the path to your Storage Account ARM template JSON file
-#       deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
-#     displayName: 'Storage'
-# ADO Pipeline YAML for ARM Template Deployment
 
 trigger:
 - main  # Set the branch that triggers the pipeline
 
 variables:
   # Define variables for Azure service connection and subscription ID
-  azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'  # Replace with your Azure service connection name
-  azureSubscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'  # Replace with your Azure subscription ID
+  azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'
+  azureSubscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5' 
 
   # Define variables for resource group, location, and ARM template file paths
   resourceGroupName: 'ARM_Template_Test'
-  azureRegion: 'US-east'  # Replace with your target Azure region
-  appServiceTemplate: 'AppService.json'  # Replace with the path to your App Service ARM template JSON file
-  keyVaultTemplate: 'KeyVault.json'  # Replace with the path to your Key Vault ARM template JSON file
-  storageTemplate: 'azuredeploy.json'  # Replace with the path to your Storage Account ARM template JSON file
-  storageTemplate2: 'Storage.json'  # Replace with the path to your Storage Account ARM template JSON file
+  azureRegion: 'US-east' 
+  appServiceTemplate: 'AppService.json'  
+  keyVaultTemplate: 'KeyVault.json'  
+  storageTemplate: 'azuredeploy.json'  
+  storageTemplate2: 'Storage.json' 
 
 pool:
-  vmImage: 'windows-latest'  # Use an appropriate build agent image
+  vmImage: 'windows-latest'  
 
 jobs:
 - job: DeployARMTemplates
-  displayName: 'Deploy ARM Templates' # custom name for the task
+  displayName: 'Deploy ARM Templates' # custom name 
   steps:
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -78,7 +29,7 @@ jobs:
       resourceGroupName: $(resourceGroupName)
       location: $(azureRegion)
       csmFile: $(appServiceTemplate)
-      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+      deploymentMode: 'Incremental'  
     displayName: 'AppService + AppServicePlan'
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -87,7 +38,7 @@ jobs:
       resourceGroupName: $(resourceGroupName)
       location: $(azureRegion)
       csmFile: $(keyVaultTemplate)
-      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+      deploymentMode: 'Incremental'  
     displayName: 'KeyVault'
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -96,7 +47,7 @@ jobs:
       resourceGroupName: $(resourceGroupName)
       location: $(azureRegion)
       csmFile: $(storageTemplate)
-      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+      deploymentMode: 'Incremental' 
     displayName: 'AzureDeploy'
 
   - task: AzureResourceManagerTemplateDeployment@3
@@ -106,5 +57,5 @@ jobs:
       resourceGroupName: $(resourceGroupName)
       location: $(azureRegion)
       csmFile: $(storageTemplate2)
-      deploymentMode: 'Incremental'  # Choose 'Incremental' or 'Complete' deployment mode
+      deploymentMode: 'Incremental' 
     displayName: 'Storage'
