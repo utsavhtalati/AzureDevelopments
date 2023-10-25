@@ -14,6 +14,7 @@ variables:
   keyVaultTemplate: 'KeyVault.json'  
   storageTemplate: 'azuredeploy.json'  
   storageTemplate2: 'Storage.json' 
+  sqlServer: 'talatitestserver.json'
 
 pool:
   vmImage: 'windows-latest'  
@@ -59,3 +60,13 @@ jobs:
       csmFile: $(storageTemplate2)
       deploymentMode: 'Incremental' 
     displayName: 'Storage'
+
+ - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: $(azureServiceConnection)
+      subscriptionId: $(azureSubscriptionId)
+      resourceGroupName: $(resourceGroupName)
+      location: $(azureRegion)
+      csmFile: $(sqlServer)
+      deploymentMode: 'Incremental' 
+    displayName: 'Talati SQL Server'
