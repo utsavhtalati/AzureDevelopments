@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vulnerabilityAssessments_Default_storageContainerPath": {
-            "value": null
+            "value": 1
         },
         "servers_talatitestserver_name": {
-            "value": null
+            "value": 1
         }
     }
 }
