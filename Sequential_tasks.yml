@@ -51,7 +51,7 @@ jobs:
       deploymentMode: 'Incremental' 
     displayName: 'Storage'
 
- - task: AzureResourceManagerTemplateDeployment@3
+  - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       azureResourceManagerConnection: $(azureServiceConnection)
       subscriptionId: $(azureSubscriptionId)
