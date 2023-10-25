@@ -23,34 +23,34 @@ jobs:
 - job: DeployARMTemplates
   displayName: 'Deploy ARM Templates' # custom name 
   steps:
-  # - task: AzureResourceManagerTemplateDeployment@3
-  #   inputs:
-  #     azureResourceManagerConnection: $(azureServiceConnection)
-  #     subscriptionId: $(azureSubscriptionId)
-  #     resourceGroupName: $(resourceGroupName)
-  #     location: $(azureRegion)
-  #     csmFile: $(appServiceTemplate)
-  #     deploymentMode: 'Incremental'  
-  #   displayName: 'AppService + AppServicePlan'
-  # - task: AzureResourceManagerTemplateDeployment@3
-  #   inputs:
-  #     azureResourceManagerConnection: $(azureServiceConnection)
-  #     subscriptionId: $(azureSubscriptionId)
-  #     resourceGroupName: $(resourceGroupName)
-  #     location: $(azureRegion)
-  #     csmFile: $(keyVaultTemplate)
-  #     deploymentMode: 'Incremental'  
-  #   displayName: 'KeyVault'
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: $(azureServiceConnection)
+      subscriptionId: $(azureSubscriptionId)
+      resourceGroupName: $(resourceGroupName)
+      location: $(azureRegion)
+      csmFile: $(appServiceTemplate)
+      deploymentMode: 'Incremental'  
+    displayName: 'AppService + AppServicePlan'
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: $(azureServiceConnection)
+      subscriptionId: $(azureSubscriptionId)
+      resourceGroupName: $(resourceGroupName)
+      location: $(azureRegion)
+      csmFile: $(keyVaultTemplate)
+      deploymentMode: 'Incremental'  
+    displayName: 'KeyVault'
 
-  # - task: AzureResourceManagerTemplateDeployment@3
-  #   inputs:
-  #     azureResourceManagerConnection: $(azureServiceConnection)
-  #     subscriptionId: $(azureSubscriptionId)
-  #     resourceGroupName: $(resourceGroupName)
-  #     location: $(azureRegion)
-  #     csmFile: $(storageTemplate)
-  #     deploymentMode: 'Incremental' 
-  #   displayName: 'Storage'
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      azureResourceManagerConnection: $(azureServiceConnection)
+      subscriptionId: $(azureSubscriptionId)
+      resourceGroupName: $(resourceGroupName)
+      location: $(azureRegion)
+      csmFile: $(storageTemplate)
+      deploymentMode: 'Incremental' 
+    displayName: 'Storage'
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
