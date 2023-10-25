@@ -11,9 +11,8 @@ variables:
   resourceGroupName: 'ARM_Template_Test'
   azureRegion: 'US-east' 
   appServiceTemplate: 'AppService.json'  
-  keyVaultTemplate: 'KeyVault.json'  
-  storageTemplate: 'azuredeploy.json'  
-  storageTemplate2: 'Storage.json' 
+  keyVaultTemplate: 'KeyVault.json'    
+  storageTemplate: 'Storage.json' 
   sqlServer: 'talatitestserver.json'
 
 pool:
@@ -41,15 +40,6 @@ jobs:
       csmFile: $(keyVaultTemplate)
       deploymentMode: 'Incremental'  
     displayName: 'KeyVault'
-  - task: AzureResourceManagerTemplateDeployment@3
-    inputs:
-      azureResourceManagerConnection: $(azureServiceConnection)
-      subscriptionId: $(azureSubscriptionId)
-      resourceGroupName: $(resourceGroupName)
-      location: $(azureRegion)
-      csmFile: $(storageTemplate)
-      deploymentMode: 'Incremental' 
-    displayName: 'AzureDeploy'
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -57,7 +47,7 @@ jobs:
       subscriptionId: $(azureSubscriptionId)
       resourceGroupName: $(resourceGroupName)
       location: $(azureRegion)
-      csmFile: $(storageTemplate2)
+      csmFile: $(storageTemplate)
       deploymentMode: 'Incremental' 
     displayName: 'Storage'
 
