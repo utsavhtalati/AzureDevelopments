@@ -334,21 +334,6 @@
             "properties": {
                 "state": "Disabled"
             }
-        },
-        {
-            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
-            "apiVersion": "2023-02-01-preview",
-            "name": "[concat(parameters('servers_talatitestserver_name'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_talatitestserver_name'))]"
-            ],
-            "properties": {
-                "recurringScans": {
-                    "isEnabled": false,
-                    "emailSubscriptionAdmins": true
-                },
-                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
-            }
         }
     ]
 }
