@@ -104,4 +104,4 @@ stages:
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: $(azureSubscriptionId)
-        WebAppName: 'ServicePlan.json'  # Replace with the actual name of your Azure App Service
+        WebAppName: 'AppService.json' 
