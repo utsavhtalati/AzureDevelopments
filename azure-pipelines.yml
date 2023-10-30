@@ -104,4 +104,4 @@ stages:
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: $(azureSubscriptionId)
-        WebAppName: 'AppService.json'  #name of the AppService i created on the portal. Not json ()
+        WebAppName: 'webApp-k24rbi77ds56m'  #name of the AppService i created on the portal. Not json ()
