@@ -1,4 +1,4 @@
-trigger:
+trigger: #v1.0 
 - master
 
 pool:
@@ -9,99 +9,43 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-stages:
-- stage: BuildAndPublish
-  jobs:
-  - job: BuildAndPublish
-    displayName: 'Build and Publish'
-    steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '6.x' #3.1.x try
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '6.x' #3.1.x try
+      installationPath: $(Agent.ToolsDirectory)/dotnet
 
-    - script: |
-        dotnet --version
-      displayName: 'Check .NET Core SDK Version'
+  - script: |
+      dotnet --version
+    displayName: 'Check .NET Core SDK Version'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
-        feedsToUse: 'select'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+      feedsToUse: 'select'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'publishedArtifacts'
-        publishLocation: 'Container'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'publishedArtifacts'
+      publishLocation: 'Container'
 
-- stage: DeployARMTemplates
-  jobs:
-  - job: DeployARMTemplates
-    displayName: 'Deploy ARM Templates'
-    steps:
-    # Your ARM template deployment tasks here as shown in your previous YAML
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        azureResourceManagerConnection: $(azureServiceConnection)
-        subscriptionId: $(azureSubscriptionId)
-        resourceGroupName: $(resourceGroupName)
-        location: $(azureRegion)
-        csmFile: $(appServiceTemplate)
-        deploymentMode: 'Incremental'  
-      displayName: 'AppService + AppServicePlan'
-
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        azureResourceManagerConnection: $(azureServiceConnection)
-        subscriptionId: $(azureSubscriptionId)
-        resourceGroupName: $(resourceGroupName)
-        location: $(azureRegion)
-        csmFile: $(keyVaultTemplate)
-        deploymentMode: 'Incremental'  
-      displayName: 'KeyVault'
-
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        azureResourceManagerConnection: $(azureServiceConnection)
-        subscriptionId: $(azureSubscriptionId)
-        resourceGroupName: $(resourceGroupName)
-        location: $(azureRegion)
-        csmFile: $(storageTemplate)
-        deploymentMode: 'Incremental' 
-      displayName: 'Storage'
-
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        azureResourceManagerConnection: $(azureServiceConnection)
-        subscriptionId: $(azureSubscriptionId)
-        resourceGroupName: $(resourceGroupName)
-        location: $(azureRegion)
-        csmFile: $(sqlServerTemplate)  # Updated variable name
-        deploymentMode: 'Incremental' 
-      displayName: 'Talati SQL Server'
-
-- stage: DeployToAppService
-  jobs:
-  - job: DeployToAppService
-    displayName: 'Deploy to Azure App Service'
-    steps:
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: $(azureSubscriptionId)
-        WebAppName: 'webApp-k24rbi77ds56m'  #name of the AppService i created on the portal. Not json ()
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: $(azureSubscriptionId)
+      WebAppName: 'webApp-k24rbi77ds56m'
