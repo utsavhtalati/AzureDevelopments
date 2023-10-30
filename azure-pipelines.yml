@@ -8,6 +8,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  # Define variables for Azure service connection and subscription ID
+  azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'
+  azureSubscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5' 
 
 steps:
   - task: UseDotNet@2
