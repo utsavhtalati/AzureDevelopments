@@ -62,7 +62,7 @@ steps:
 
   - task: AzureWebApp@1
     inputs:
-      azureSubscription: # string. Required. Azure subscription. 
+      azureSubscription: $(azureSubscriptionId)# string. Required. Azure subscription. 
       appType: 'webApp'# 'webApp' | 'webAppLinux'. Required. App type. 
       appName: 'webApp-k24rbi77ds56m' # string. Required. App name. 
       #deployToSlotOrASE: false # boolean. Optional. Use when appType != "". Deploy to Slot or App Service Environment. Default: false.
