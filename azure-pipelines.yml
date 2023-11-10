@@ -16,7 +16,7 @@ variables:
   buildConfiguration: 'Release'
   # Define variables for Azure service connection and subscription ID
   azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'
-  azureSubscriptionId: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5' 
+  
 
 steps:
 
@@ -57,12 +57,12 @@ steps:
   # - task: AzureRmWebAppDeployment@4
   #   inputs:
   #     ConnectionType: 'AzureRM'
-  #     azureSubscription: $(azureSubscriptionId)
+  #     azureSubscription: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5'
   #     WebAppName: 'webApp-k24rbi77ds56m'
 
   - task: AzureWebApp@1
     inputs:
-      azureSubscription: $(azureSubscriptionId)# string. Required. Azure subscription. 
+      azureSubscription: '540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5' # string. Required. Azure subscription. 
       appType: 'webApp'# 'webApp' | 'webAppLinux'. Required. App type. 
       appName: 'webApp-k24rbi77ds56m' # string. Required. App name. 
       #deployToSlotOrASE: false # boolean. Optional. Use when appType != "". Deploy to Slot or App Service Environment. Default: false.
