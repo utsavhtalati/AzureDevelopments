@@ -42,8 +42,10 @@ steps:
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'publishedArtifacts'
-      publishLocation: 'Container'
+      ArtifactName: 'publishedArtifacts' 
+      publishLocation: FilePath # what kind of publish I am interested in (container)
+      TargetPath: '$(System.DefaultWorkingDirectory)/targetPath/' # set where is the folder, where is the archieve we created. 
+
 
   - task: AzureRmWebAppDeployment@4
     inputs:
