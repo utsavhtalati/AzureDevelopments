@@ -57,10 +57,4 @@ steps:
       Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
       # Additional inputs for ARM template deployment
 
-  - task: AzureWebApp@1
-    inputs:
-      azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
-      appType: 'webApp'
-      appName: 'webApp-k24rbi77ds56m'
-      package: '$(System.DefaultWorkingDirectory)/publishedArtifacts/**/*.zip'
-      # Additional inputs for web app deployment
+
