@@ -1,10 +1,4 @@
-# Azure Web App v1
-# Deploy an Azure Web App for Linux or Windows.
-
-
-
-
-trigger: #v1.0 
+trigger:
 - master
 
 pool:
@@ -14,16 +8,13 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  # Define variables for Azure service connection and subscription ID
   azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'
-  
 
 steps:
-
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      version: '6.x' #3.1.x try
+      version: '6.x'
       installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - script: |
@@ -54,19 +45,19 @@ steps:
       ArtifactName: 'publishedArtifacts'
       publishLocation: 'Container'
 
-  # - task: AzureRmWebAppDeployment@4
-  #   inputs:
-  #     ConnectionType: 'AzureRM'
-  #     azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
-  #     WebAppName: 'webApp-k24rbi77ds56m'
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
+      appType: 'webApp'
+      WebAppName: 'webApp-k24rbi77ds56m'
+      Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      # Additional inputs for ARM template deployment
 
   - task: AzureWebApp@1
     inputs:
-      azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION' # string. Required. Azure subscription. 
-      appType: 'webApp'# 'webApp' | 'webAppLinux'. Required. App type. 
-      appName: 'webApp-k24rbi77ds56m' # string. Required. App name. 
-      #deployToSlotOrASE: false # boolean. Optional. Use when appType != "". Deploy to Slot or App Service Environment. Default: false.
-      #resourceGroupName: # string. Required when deployToSlotOrASE = true. Resource group. 
-      #slotName: 'production' # string. Required when deployToSlotOrASE = true. Slot. Default: production.
+      azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
+      appType: 'webApp'
+      appName: 'webApp-k24rbi77ds56m'
       package: '$(System.DefaultWorkingDirectory)/publishedArtifacts/**/*.zip'
-  
+      # Additional inputs for web app deployment
