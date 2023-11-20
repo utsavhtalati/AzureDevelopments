@@ -57,8 +57,8 @@
       "location": "[parameters('location')]",
       "sku": {
         "name": "[parameters('sku')]"
-      },
-      "kind": "linux",
+      }, 
+      "kind": "Microsoft", 
       "properties": {
         "reserved": true
       }
