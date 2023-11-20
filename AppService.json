@@ -31,9 +31,9 @@
         "description": "The SKU of App Service Plan."
       }
     },
-    "linuxFxVersion": {
+    "windowsFxVersion": {
       "type": "string",
-      "defaultValue": "DOTNETCORE|3.0",
+      "defaultValue": ".NET Core|3.0",
       "metadata": {
         "description": "The Runtime stack of current web app"
       }
