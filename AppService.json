@@ -72,7 +72,8 @@
         "httpsOnly": true,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanPortalName'))]",
         "siteConfig": {
-          "linuxFxVersion": "[parameters('linuxFxVersion')]",
+          "netFrameworkVersion": "v6.0",
+          "use32BitWorkerProcess": true,
           "minTlsVersion": "1.2",
           "ftpsState": "FtpsOnly"
         }
