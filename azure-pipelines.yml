@@ -53,7 +53,7 @@ steps:
       ConnectionType: 'AzureRM'
       azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
       appType: 'webApp'
-      WebAppName: 'webApp-k24rbi77ds56m'
+      WebAppName: 'UtsavWebAppTwo'
       Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
       # Additional inputs for ARM template deployment
 
