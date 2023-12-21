@@ -1,0 +1,172 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_simpleVM_name": {
+            "defaultValue": "simpleVM2",
+            "type": "string"
+        },
+        "networkInterfaces_simplevm42_externalid": {
+            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/ARM_Template_Test/providers/Microsoft.Network/networkInterfaces/simplevm42",
+            "type": "string"
+        },
+        "disks_simpleVM_OsDisk_1_e1d7dcec692c4898aef24b491cfc262c_externalid": {
+            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/ARM_TEMPLATE_TEST/providers/Microsoft.Compute/disks/simpleVM_OsDisk_1_e1d7dcec692c4898aef24b491cfc262c",
+            "type": "string"
+        }
+    },
+    
+    "variables": {
+        "yourVNetName": "myVNet",
+        "yourSubnetName": "mySubnet",
+        "yourPublicIPName": "myPublicIP",
+        "yourNSGName": "myNSG",
+        "yourNetworkInterfaceName": "myNIC",
+        "yourIPConfigName": "myIPConfig",
+    
+       
+        "vNetAddressPrefix": "10.0.0.0/16",
+        "subnetPrefix": "10.0.0.0/24",
+    
+      
+        "publicIPAllocationMethod": "Dynamic",
+        "privateIPAllocationMethod": "Dynamic"
+    }
+    ,
+    "resources": [
+        {
+            
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-03-01",
+            "name": "[variables('yourVNetName')]",
+            "location": "eastus",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": ["10.0.0.0/16"]
+                },
+                "subnets": [{
+                    "name": "[variables('yourSubnetName')]",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('yourPublicIPName')]",
+            "location": "eastus",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('yourNSGName')]",
+            "location": "eastus",
+            "properties": {
+                "securityRules": [
+                    
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('yourNetworkInterfaceName')]",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [{
+                    "name": "[variables('yourIPConfigName')]",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "subnet": {
+                            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('yourVNetName'), variables('yourSubnetName'))]"
+                        },
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('yourPublicIPName'))]"
+                        }
+                    }
+                }],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('yourNSGName'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('yourVNetName'))]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('yourPublicIPName'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('yourNSGName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('virtualMachines_simpleVM_name')]",
+            "location": "eastus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2022-datacenter-azure-edition-hotpatch",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_simpleVM_name'), '_OsDisk')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        },
+                        
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_simpleVM_name')]",
+                    "adminUsername": "utsavhtalati",
+                    "adminPassword": "Giantsny123#",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                        
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_simplevm42_externalid')]"
+                            
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2023-03-01",
+            "name": "[concat(parameters('virtualMachines_simpleVM_name'), '/enablevmAccess')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_simpleVM_name'))]"
+            ],
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "VMAccessAgent",
+                "typeHandlerVersion": "2.0",
+                "settings": {},
+                "protectedSettings": {}
+            }
+        }
+    ]
+}
