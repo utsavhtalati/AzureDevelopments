@@ -1,60 +1,22 @@
-#trigger:
-#- master
-
+trigger:
+  branches:
+    include:
+    - main  # Specify the branch here
+  paths:
+    include:
+    - path/to/your/script.ps1  # Specify the path to your PowerShell script
 
 pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  azureServiceConnection: 'ARM_TEMPLATE_SERVICE_CONNECTION'
+  vmImage: 'windows-latest'  # Use an appropriate agent image
 
 steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '7.x'
-      installationPath: $(Agent.ToolsDirectory)/dotnet
-
-  - script: |
-      dotnet --version
-    displayName: 'Check .NET Core SDK Version'
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'restore'
-      projects: '**/*.csproj'
-      feedsToUse: 'select'
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'publish'
-      publishWebProjects: true
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'publishedArtifacts' 
-      publishLocation: FilePath # what kind of publish I am interested in (container)
-      TargetPath: '$(System.DefaultWorkingDirectory)/targetPath/' # set where is the folder, where is the archieve we created. 
-
-
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: 'AzureRM'
-      azureSubscription: 'ARM_TEMPLATE_SERVICE_CONNECTION'
-      appType: 'webApp'
-      WebAppName: 'UtsavWebAppTwo'
-      Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-      # Additional inputs for ARM template deployment
-
-
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '<Your-Azure-Service-Connection-Name>'  # Replace with your Azure service connection name
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az deployment group create \
+        --resource-group <Your-Resource-Group> \  # Replace with your resource group name
+        --template-file $(Build.SourcesDirectory)/path/to/your/VM4.json \  # Replace with the path to your ARM template
+        --parameters @$(Build.SourcesDirectory)/path/to/your/parameters.json  # Replace with the path to your parameters file, if any
