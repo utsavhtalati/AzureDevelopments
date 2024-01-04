@@ -19,4 +19,3 @@ steps:
       az deployment group create \
         --resource-group Utsav1 \  # Replace with your resource group name
         --template-file $(Build.SourcesDirectory)/path/to/your/VM4.json \  # Replace with the path to your ARM template
-        --parameters @$(Build.SourcesDirectory)/path/to/your/parameters.json  # Replace with the path to your parameters file, if any
