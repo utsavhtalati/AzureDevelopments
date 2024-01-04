@@ -12,11 +12,11 @@ pool:
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '<Your-Azure-Service-Connection-Name>'  # Replace with your Azure service connection name
+    azureSubscription: 'Utsav1SC'  # Replace with your Azure service connection name
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
       az deployment group create \
-        --resource-group <Your-Resource-Group> \  # Replace with your resource group name
+        --resource-group Utsav1 \  # Replace with your resource group name
         --template-file $(Build.SourcesDirectory)/path/to/your/VM4.json \  # Replace with the path to your ARM template
         --parameters @$(Build.SourcesDirectory)/path/to/your/parameters.json  # Replace with the path to your parameters file, if any
