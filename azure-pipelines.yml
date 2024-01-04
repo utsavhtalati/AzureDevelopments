@@ -4,7 +4,7 @@ trigger:
     - main  # Specify the branch here
   paths:
     include:
-    - path/to/your/script.ps1  # Specify the path to your PowerShell script
+    - chocoScript.ps1  # Specify the path to your PowerShell script
 
 pool:
   vmImage: 'windows-latest'  # Use an appropriate agent image
@@ -13,9 +13,9 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Utsav1SC'  # Replace with your Azure service connection name
-    scriptType: 'bash'
+    scriptType: 'ps'  # Use PowerShell for Windows agent
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az deployment group create \
-        --resource-group Utsav1 \  # Replace with your resource group name
-        --template-file $(Build.SourcesDirectory)/path/to/your/VM4.json \  # Replace with the path to your ARM template
+      az deployment group create `
+        --resource-group Utsav1 `
+        --template-file $(Build.SourcesDirectory)/VM3.json
