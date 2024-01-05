@@ -7,7 +7,7 @@
             "type": "String"
         },
         "disks_VMweb001_OsDisk_1_0fbb4e9fee0a413d92aee207266c5010_externalid": {
-            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/Utsav1/providers/Microsoft.Compute/disks/VMweb001_OsDisk_1_0fbb4e9fee0a413d92aee207266c5010",
+            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/UTSAV1/providers/Microsoft.Compute/disks/VMweb001_OsDisk_1_0fbb4e9fee0a413d92aee207266c5010",
             "type": "String"
         },
         "networkInterfaces_vmweb001489_z1_externalid": {
@@ -45,9 +45,11 @@
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
                             "id": "[parameters('disks_VMweb001_OsDisk_1_0fbb4e9fee0a413d92aee207266c5010_externalid')]"
                         },
-                        "deleteOption": "Delete"
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 127
                     },
                     "dataDisks": [],
                     "diskControllerType": "SCSI"
@@ -95,29 +97,29 @@
                         "enabled": true
                     }
                 }
-
-
             }
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2023-03-01",
             "name": "[concat(parameters('virtualMachines_VMweb001_name'), '/CustomScriptForChoco')]",
             "location": "eastus",
             "dependsOn": [
-                "[parameters('virtualMachines_VMweb001_name')]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_VMweb001_name'))]"
             ],
             "properties": {
+                "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
                 "typeHandlerVersion": "1.10",
-                "autoUpgradeMinorVersion": true,
                 "settings": {
-                    "fileUris": ["https://raw.githubusercontent.com/utsavhtalati/AzureDevelopments/master/chocoScript.ps1"],
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File chocoScript.ps1"
-                }
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/utsavhtalati/AzureDevelopments/master/chocoScript.ps1"
+                    ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File chocoScript.ps1')]"
+                },
+                "protectedSettings": {}
             }
         }
-        
     ]
 }
