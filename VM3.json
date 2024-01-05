@@ -45,8 +45,7 @@
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
-                            "storageAccountType": "Premium_LRS",
-                            "id": "[parameters('disks_VMweb001_OsDisk_1_0fbb4e9fee0a413d92aee207266c5010_externalid')]"
+                            "storageAccountType": "StandardSSD_LRS"
                         },
                         "deleteOption": "Delete",
                         "diskSizeGB": 127
