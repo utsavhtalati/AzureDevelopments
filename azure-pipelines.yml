@@ -1,13 +1,13 @@
 trigger:
   branches:
     include:
-    - main  # Specify the branch here
+    - master  
   paths:
     include:
     - chocoScript.ps1  # Specify the path to your PowerShell script
 
 pool:
-  vmImage: 'windows-latest'  # Use an appropriate agent image
+  vmImage: 'windows-latest' 
 
 steps:
 - task: AzureCLI@2
