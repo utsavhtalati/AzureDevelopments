@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "extensions_CustomScriptExtension_commandToExecute": {
+            "type": "SecureString"
+        },
+        "virtualMachines_vmUtsav_name": {
+            "defaultValue": "vmUtsav",
+            "type": "String"
+        },
+        "disks_vmUtsav_OsDisk_1_8fedc90862394093bcb6c3195798904a_externalid": {
+            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/ARM_Template_Test/providers/Microsoft.Compute/disks/vmUtsav_OsDisk_1_8fedc90862394093bcb6c3195798904a",
+            "type": "String"
+        },
+        "networkInterfaces_vmutsav557_z1_externalid": {
+            "defaultValue": "/subscriptions/540c5a3c-b29f-44d5-ada5-e8ffca6ff9e5/resourceGroups/ARM_Template_Test/providers/Microsoft.Network/networkInterfaces/vmutsav557_z1",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2023-03-01",
+            "name": "[parameters('virtualMachines_vmUtsav_name')]",
+            "location": "eastus",
+            "zones": [
+                "1"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "additionalCapabilities": {
+                    "hibernationEnabled": false
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2022-datacenter-azure-edition-hotpatch",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_vmUtsav_name'), '_OsDisk_1_8fedc90862394093bcb6c3195798904a')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS",
+                            "id": "[parameters('disks_vmUtsav_OsDisk_1_8fedc90862394093bcb6c3195798904a_externalid')]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": [],
+                    "diskControllerType": "SCSI"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_vmUtsav_name')]",
+                    "adminUsername": "utsav",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true,
+                        "patchSettings": {
+                            "patchMode": "AutomaticByPlatform",
+                            "automaticByPlatformSettings": {
+                                "rebootSetting": "IfRequired",
+                                "bypassPlatformSafetyChecksOnUserSchedule": false
+                            },
+                            "assessmentMode": "ImageDefault",
+                            "enableHotpatching": true
+                        },
+                        "enableVMAgentPlatformUpdates": false
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "securityProfile": {
+                    "uefiSettings": {
+                        "secureBootEnabled": true,
+                        "vTpmEnabled": true
+                    },
+                    "securityType": "TrustedLaunch"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_vmutsav557_z1_externalid')]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2023-03-01",
+            "name": "[concat(parameters('virtualMachines_vmUtsav_name'), '/CustomScriptExtension')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_vmUtsav_name'))]"
+            ],
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "commandToExecute": "[parameters('extensions_CustomScriptExtension_commandToExecute')]"
+                },
+                "protectedSettings": {}
+            }
+        }
+    ]
+}
